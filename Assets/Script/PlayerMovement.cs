@@ -1,3 +1,5 @@
+using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -7,10 +9,13 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded = false;
     private float movement;
     private Rigidbody2D rb;
+
+    private Animator _animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -24,6 +29,11 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             isGrounded = false;
         }
+    }
+
+    void FixedUpdate()
+    {
+        _animator.SetFloat("xVelocity", Math.Abs(rb.velocity.x));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
